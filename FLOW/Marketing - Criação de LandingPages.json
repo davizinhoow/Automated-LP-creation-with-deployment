@@ -1,0 +1,1648 @@
+{
+  "name": "Marketing - Criação de LandingPages",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "create-landing-page",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1088,
+        -192
+      ],
+      "id": "90cbf449-df75-4fa4-a18f-687ab7fede2a",
+      "name": "Webhook",
+      "webhookId": "347aafb4-ece6-4b11-ac1f-f1237e2b46c1"
+    },
+    {
+      "parameters": {
+        "content": "Criar estrutura inicial das páginas e informações.",
+        "height": 224,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2992,
+        -1088
+      ],
+      "id": "4974e311-119f-407c-bf74-4500f62644da",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "Melhorar SEO, Responsividade e Design.",
+        "height": 224,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2480,
+        -1088
+      ],
+      "id": "44294aa8-9120-4456-af95-01e5529f5216",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "briefing_pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -528,
+        -496
+      ],
+      "id": "b33ec296-c862-4848-854a-3514294fe5b9",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.moonshot.ai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-yPzclLkrvhsR16VZYn3HIbu8rqwKCrWJQ1Iqfu1GknNcIPYu"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "timeout": 900000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -2416,
+        -1024
+      ],
+      "id": "eb914bbb-7de4-4678-af8b-486ac10d0fc6",
+      "name": "Prompt 2",
+      "executeOnce": false,
+      "alwaysOutputData": false,
+      "notesInFlow": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8169602c-43c0-4377-8146-acaef6863f1d",
+              "name": "BREAFING",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -368,
+        -496
+      ],
+      "id": "c9ad22e5-ecfc-4b66-83c7-263d5e05e893",
+      "name": "Breafing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const codigoAnterior = $json.choices[0].message.content || \"\";\n\nconst prompt = `Refine a página TSX gerada anteriormente.\n\nMantenha:\n\no mesmo arquivo\na mesma estrutura base\no fluxo de conversão já existente\na lógica de formulário e matrícula\no foco em conversão\no foco em SEO/GEO\no foco em performance\no foco em mobile\nas cores já utilizadas no TSX anterior\n\nREGRAS ABSOLUTAS:\n\n1 - Retorne APENAS código TSX\n2 - Não explique nada\n3 - Não use markdown\n4 - Não criar novo arquivo\n5 - Não mudar a estrutura geral da página\n6 - Não quebrar lógica existente\n\nRESTRIÇÕES DE LAYOUT:\n\n7 - NÃO adicionar header\n8 - NÃO adicionar footer\n9 - NÃO adicionar menu global\n10 - NÃO adicionar breadcrumbs\n11 - NÃO gerar BreadcrumbList no schema\n12 - Manter apenas o conteúdo da landing page\n\nIMAGENS E ÍCONES:\n\n13 - NÃO usar emojis\n14 - Se precisar de ícones, usar SVG inline\n15 - NÃO adicionar imagens novas\n16 - NÃO usar next/image sem necessidade\n\nIDENTIDADE VISUAL:\n\n17 - NÃO alterar a identidade visual base\n18 - NÃO criar nova paleta\n19 - Usar apenas cores já existentes no TSX\n20 - Apenas melhorar contraste, consistência e aplicação\n\nMELHORIAS OBRIGATÓRIAS:\n\n21 - Melhorar copy (mais direta, clara e persuasiva)\n22 - Melhorar hierarquia visual\n23 - Melhorar escaneabilidade\n24 - Melhorar legibilidade no mobile\n25 - Melhorar organização das seções\n26 - Melhorar percepção de valor\n27 - Melhorar ritmo de leitura\n28 - Melhorar consistência entre blocos\n\nSEO / GEO:\n\n29 - Melhorar metadata\n30 - Melhorar OpenGraph\n31 - Melhorar Twitter\n32 - Melhorar JSON-LD\n33 - Manter canonical correta\n34 - Manter openGraph.url correta\n35 - Não alterar rota da página\n\nCONVERSÃO:\n\n36 - Fortalecer CTAs\n37 - Melhorar textos dos botões\n38 - Aumentar destaque visual dos botões\n39 - Garantir contraste forte em todos estados (normal, hover, active, focus)\n40 - Garantir que:\n    CTAs apontam para o formulário\n    valor aparece só após envio\n    botão final aparece após valor\n    fluxo NÃO seja quebrado\n\nCOPY:\n\n41 - Reescrever textos para ficarem:\n    mais curtos\n    mais diretos\n    mais comerciais\n    mais escaneáveis\n42 - Evitar:\n    blocos longos\n    texto genérico\n    exageros\n    promessas irreais\n\nDESIGN:\n\n43 - Melhorar espaçamento e ritmo\n44 - Criar separação visual mais clara entre seções\n45 - Destacar melhor:\n    hero\n    benefícios\n    formulário\n    CTA final\n46 - Alternar seções claras e escuras apenas se já fizer sentido no design atual\n\nMOBILE:\n\n47 - Melhorar densidade (menos espaço desnecessário)\n48 - Garantir títulos bem quebrados\n49 - Garantir CTAs fortes e visíveis\n50 - Evitar blocos grandes\n\nFORMULÁRIO:\n\n51 - Não alterar lógica\n52 - Melhorar aparência\n53 - Tornar mais confiável visualmente\n54 - Destacar melhor o bloco de valor revelado\n55 - Destacar botão final de matrícula\n\nPROIBIÇÕES:\n\n56 - Não mudar rota\n57 - Não alterar canonical\n58 - Não alterar estrutura funcional\n59 - Não inventar dados\n60 - Não inventar código de curso\n61 - Não adicionar elementos globais\n62 - Não usar emojis\n63 - Não quebrar fluxo de conversão\n\nOBJETIVO:\n\n64 - Tornar a página mais:\n    vendável\n    clara\n    forte visualmente\n    organizada\n    profissional\n    orientada à decisão\n\n65 - Nunca utilizar componentes client side.\n66 - Nunca utilizar hooks que necessitem ser clientside.\n\n67 - NÃO CRIE HEADER, NÃO CRIE FOOTER, NÃO CRIE NENHUM BLOCO QUE FUNCIONE COMO HEADER OU FOOTER, MESMO QUE COM OUTRO NOME, SE EXISTIR HEADER OU FOOTER NO CÓDIGO ANTERIOR, REMOVER COMPLETAMENTE\n\nEntrada:\n${codigoAnterior}`;\n\nreturn [\n  {\n    json: {\n      \"model\": \"kimi-k2.5\",\n      \"messages\": [\n        {\n          \"role\": \"system\",\n          \"content\": \"Você é um agente de IA especialista em criação de páginas de alta conversão com Next.js App Router + TypeScript + Tailwind CSS.\"\n        },\n        {\n          \"role\": \"user\",\n          \"content\": prompt\n        }\n      ]\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2704,
+        -1024
+      ],
+      "id": "f0709c48-754e-4263-87ba-5a32943d28c2",
+      "name": "JSON VÁLIDO1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        2128,
+        80
+      ],
+      "id": "a13c3a49-f6cf-498f-95e4-bce683913dd6",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega a resposta da API\nlet content = $json.choices[0].message.content || \"\";\n\n// Remove blocos de código markdown (```tsx, ```typescript, ```)\ncontent = content.replace(/^```(?:tsx|typescript|ts|jsx|javascript|js)?\\s*\\n?/gm, \"\");\ncontent = content.replace(/```\\s*$/gm, \"\");\n\n// Remove possíveis explicações antes do código (tudo antes do primeiro import ou 'use client')\nconst codeStart = content.search(/^(import |['\"]use client['\"]|export )/m);\nif (codeStart > 0) {\n  content = content.substring(codeStart);\n}\n\n// Remove possíveis explicações depois do código (tudo após o último })\nconst lastBrace = content.lastIndexOf(\"}\");\nif (lastBrace !== -1) {\n  content = content.substring(0, lastBrace + 1);\n}\n\n// Remove linhas em branco extras no início e fim\ncontent = content.trim();\n\nreturn [\n  {\n    codigo_tsx: content,\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2144,
+        -1024
+      ],
+      "id": "d4c670ab-8821-46ee-8364-2c0c750ae3a5",
+      "name": "Code in JavaScript1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -32
+      ],
+      "id": "6330a50a-8499-4c32-9405-b02eeed9eb20",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.moonshot.ai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-yPzclLkrvhsR16VZYn3HIbu8rqwKCrWJQ1Iqfu1GknNcIPYu"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"kimi-k2.5\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"Você é um agente de IA especialista em criação de páginas de alta conversão com Next.js App Router + TypeScript + Tailwind CSS.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": {{ JSON.stringify($json['BREAFING E PROMPT']) }}\n    }\n  ]\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -2928,
+        -1024
+      ],
+      "id": "47e3004d-2c08-42d2-af8f-57da7dfc9afc",
+      "name": "Prompt ",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        448,
+        -352
+      ],
+      "id": "7f55340d-3218-4c71-87d2-5d85b2358e6a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bb91c05c-0d62-4def-a5a6-dfeb61c2403d",
+              "name": "BREAFING E PROMPT",
+              "value": "=PROMPT PARA O AGENTE:\n{{ $json.prompt }}\n\nBREAFING DA PÁGINA:\n{{ $json.breafing }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        -352
+      ],
+      "id": "691b75de-0f84-4a95-924b-e81cf48d0959",
+      "name": "Filtro"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-pro",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -160,
+        -352
+      ],
+      "id": "dca8964a-34e4-4aff-b885-919c0d5972bf",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um especialista em criação de PROMPTS, baseados em inputs que você recebe. Sua missão é criar um prompt através de um json com os dados necessários e um prompt de especificações, apenas integre os dados ao prompt, mantenha ele estruturado em numerações do jeito que está.\n\nPrompt:\n\nSeu trabalho é gerar UMA ÚNICA página TSX completa, pronta para uso, obrigatoriamente como Server Component.\n\nFOCO:\n\nconversão\nSEO técnico\nGEO\nperformance\nmobile-first\nEstilo CopyWriter (obrigatório)\n\nREGRAS ABSOLUTAS:\n\n1-Retorne APENAS código TSX puro\n2-Não explique nada\n3-Não use markdown\n4-Não crie múltiplos arquivos\n5-Use export default function Page()\n6-Código funcional e organizado\n7-Nunca usar \"use client\"\n8-A página deve ser obrigatoriamente Server Component\n9-Só usar recursos compatíveis com Server Components\n10-Não usar hooks de cliente como useState, useEffect, useMemo, useCallback ou similares\n11-Se a solução exigir \"use client\", reestruture a implementação para funcionar sem \"use client\"\n\nESTRUTURA:\n\n12-Usar HTML semântico (main, section, etc)\n13-Apenas 1 h1\n14-Conteúdo escaneável (títulos, listas, blocos curtos)\n15-Layout centralizado com max-w-[1280px] mx-auto px-4\n16-Mobile-first obrigatório\n\nESTRUTURA COPYWRITER (OBRIGATÓRIA):\n\n17-A página deve seguir lógica de copy ao longo da rolagem\n18-TODA seção obrigatoriamente deve terminar com um botão de \"se inscrever\"\n19-É obrigatório existir um CTA de inscrição imediatamente após CADA seção da página, sem exceção\n20-Não pode existir nenhuma seção sem botão de \"se inscrever\" ao final\n21-O botão deve aparecer repetidamente ao longo de toda a página, sempre depois de cada bloco de conteúdo\n22-O objetivo do estilo copywriter nesta página é reforçar conversão contínua, com chamada para inscrição após cada seção\n23-Se houver 6 seções, devem existir obrigatoriamente 6 botões de inscrição, um ao final de cada seção\n24-Se houver 8 seções, devem existir obrigatoriamente 8 botões de inscrição, um ao final de cada seção\n25-É proibido concentrar os CTAs apenas no topo, no meio ou no final da página\n26-Os CTAs devem estar distribuídos por toda a rolagem\n27-Cada bloco de conteúdo deve terminar conduzindo o usuário para a ação de se inscrever\n28-O CTA deve sempre ter linguagem persuasiva, como:\n\"Quero me inscrever\"\n\"Garantir minha vaga\"\n\"Inscrever-se agora\"\n\"Começar minha inscrição\"\n\n29-A estrutura deve seguir este padrão adaptável:\n\nHero\n→ botão de se inscrever\n\nSeção de apresentação / proposta de valor\n→ botão de se inscrever\n\nSeção de benefícios / diferenciais\n→ botão de se inscrever\n\nSeção de conteúdo / detalhes do curso\n→ botão de se inscrever\n\nSeção de reforço de valor\n→ botão de se inscrever\n\nSeção final de conversão\n→ botão de se inscrever\n\n30-As seções devem ser adaptadas ao conteúdo disponível nos dados e no briefing, sem deixar blocos vazios\n31-O conteúdo deve parecer natural, fluido e persuasivo\n32-Evitar repetição mecânica de textos\n33-Mesmo com vários CTAs, a página deve manter leitura agradável e natural\n34-A função do copywriter aqui é converter em todas as etapas da rolagem, nunca apenas no encerramento\n\n35-O conteúdo deve seguir lógica de copy:\npromessa → contexto → benefícios → diferenciais → reforço → CTA\n\nFLUXO DE CTA:\n\n36-Todo botão de \"se inscrever\" deve apontar primeiro para o formulário\n37-Nenhum botão intermediário pode levar direto para a matrícula\n38-O usuário deve ser estimulado a se inscrever após cada seção, sempre passando pelo formulário\n39-O valor do curso só aparece após o envio do formulário\n40-Após mostrar o valor, exibir botão final de matrícula\n41-Nunca pular o formulário\n\nSEO / GEO:\n\n42-Metadata obrigatória\n43-OpenGraph obrigatório\n44-Twitter obrigatório\n45-JSON-LD obrigatório\n46-canonical deve refletir a rota real\n47-openGraph.url deve refletir a rota real\n48-domínio padrão: https://lp.anchieta.br/\n\n49-A URL da página deve ser construída obrigatoriamente como: https://lp.anchieta.br/{grupo_curso}/{slug_curso}\n\n50-É proibido gerar URL sem o grupo (ex: /administracao)\n\n51-Todos os campos devem usar a mesma URL:\ncanonical\nopenGraph.url\nurl\n@id\nJSON-LD\n\n52-Nas descrições de META/SEO/GEO sempre inclua o nome da Instituição Grupo Anchieta\n\nURL da matrícula:\n\n53-Graduação → https://app.anchieta.br/matricula/sup?cod_curso={codigo}\n\nLÓGICA DE DADOS:\n\n54-O codigoCurso deve vir exclusivamente do array recebido\n55-Nunca hardcodar codigoCurso\n56-Nunca inventar código\n57-Modalidade padrão = primeiro item do array\n58-Não utilizar search params\n\nROTAS:\n\n59-A identidade da página é fixa:\ngrupo_curso\nslug_curso\n\n60-Nunca montar URL só com slug\n61-Links internos devem usar /{grupo}/{slug}\n\nPROIBIÇÕES:\n\n62-Não hardcodar rota\n63-Não ignorar grupo_curso\n64-Não inventar codigoCurso\n65-Não usar fallback manual tipo \"123\"\n66-Não usar searchParams sem proteção\n67-Não usar searchParams para SEO\n68-Não gerar URL errada\n69-Não inventar conteúdo de docente/coordenador\n70-Não usar \"use client\"\n71-Não transformar a página em Client Component\n72-Não usar APIs exclusivas do navegador diretamente na página\n\nOBJETIVO:\n\n73-Página simples, rápida, funcional, altamente persuasiva (copywriter), com botão de \"se inscrever\" obrigatoriamente após cada seção, SEO correto, fluxo de matrícula funcionando e estrutura de conversão otimizada\n\n74-Use os componentes padrões do Next.js sempre que forem aplicáveis, como Image, Link e outros recursos nativos que melhorem performance, SEO e navegação\n75-Priorize next/image para imagens e otimização de carregamento\n76-Priorize next/link para links internos\n77-Não use tags HTML puras quando houver componente nativo do Next.js mais adequado para o caso\n78-Em links internos, use sempre Link do Next.js\n79-Em imagens de conteúdo da página, use sempre Image do Next.js quando aplicável\n80-A implementação deve aproveitar os recursos nativos do Next.js para melhorar performance, renderização, SEO e experiência mobile\n\n\nPERSONALIZAÇÃO TEMÁTICA DA LANDING PAGE (OBRIGATÓRIA):\n\n81-A página deve ser visualmente personalizada de acordo com o tema do curso\n82-O layout não pode parecer genérico ou reutilizado sem adaptação\n83-A identidade visual deve refletir a área do curso informado\n84-As escolhas de composição, ícones, elementos gráficos, ritmo visual e atmosfera da página devem ser coerentes com o tema\n85-Se o curso for da área da saúde, a página deve transmitir confiança, cuidado, profissionalismo, clareza e organização visual\n86-Se o curso for da área de tecnologia, a página deve transmitir inovação, performance, futuro e linguagem visual mais moderna\n87-Se o curso for da área jurídica ou de negócios, a página deve transmitir credibilidade, estrutura, autoridade e solidez\n88-A personalização não deve se limitar a trocar cores ou imagens\n89-A página deve parecer pensada especificamente para aquele curso\n90-Os elementos decorativos devem ser coerentes com o curso, como SVGs, shapes, padrões, divisores ou composições visuais temáticas\n91-As cores enviadas pelo usuário devem ser respeitadas como base principal da identidade visual\n92-As imagens enviadas devem ser aproveitadas de forma estratégica, especialmente em hero, banners ou seções de reforço\n93-O conteúdo textual, os títulos e os destaques visuais devem reforçar a temática do curso durante toda a rolagem\n94-O resultado final deve parecer uma landing page premium e personalizada, e não um template genérico com texto trocado\n\nDados para criação do prompt, para passar para o proximo agente:\n{{ JSON.stringify($json.body.data) }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        -192
+      ],
+      "id": "958972a4-1ae7-4f08-bea9-9f16257283c5",
+      "name": "Aprimora o Prompt"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é um Agente Especialista em Aprimoramento Estratégico de Briefings para Landing Pages de Cursos.\n\nSua função é receber um briefing bruto e transformá-lo em um briefing final aprimorado, estruturado, estratégico, persuasivo e tematicamente contextualizado para geração de landing pages altamente personalizadas.\n\nSeu papel não é explicar o que foi feito, nem comentar o processo. Seu único papel é devolver o briefing final já reescrito, enriquecido e organizado para servir como base de geração da página.\n\nOBJETIVO:\nTransformar qualquer briefing recebido em uma versão mais profissional, clara, completa, escaneável, persuasiva e orientada à conversão, com foco especial na personalização do curso, da linguagem, da proposta de valor e da identidade visual da landing page.\n\nMISSÃO CENTRAL:\nO briefing final não deve apenas melhorar o texto. Ele deve refletir a identidade do curso e orientar a geração de uma página com aparência, linguagem e estrutura coerentes com o tema da formação.\n\nCOMO VOCÊ DEVE AGIR:\n- Corrija erros de digitação, ortografia, concordância e formatação\n- Reorganize as informações de forma lógica, fluida e escaneável\n- Enriqueça a escrita com linguagem mais clara, profissional e atrativa\n- Preserve fidelidade total às informações recebidas\n- Não invente dados factuais que não estejam no material enviado\n- Quando houver lacunas, trabalhe apenas com o que existir, sem mencionar ausência de informações\n- Adapte o briefing ao contexto específico do curso informado\n- Dê ênfase temática ao curso, fazendo com que o conteúdo pareça pensado para aquela área\n- Direcione o conteúdo para uso em landing page de alta conversão\n- Estruture o briefing para facilitar a geração de copy, seções, identidade visual e componentes da página\n\nPERSONALIZAÇÃO TEMÁTICA OBRIGATÓRIA:\n- O briefing deve refletir a natureza do curso\n- A linguagem deve se adaptar ao campo de conhecimento do curso\n- O valor percebido deve dialogar com a área profissional do curso\n- A proposta da página deve parecer exclusiva para aquele curso, e não genérica\n- Sempre que possível, destaque atmosfera, percepção de valor, contexto profissional e identidade compatíveis com o tema\n\nDIREÇÃO VISUAL OBRIGATÓRIA:\nO briefing final deve incorporar orientação visual compatível com o curso informado, considerando:\n- estilo visual ideal\n- atmosfera desejada\n- percepção estética esperada\n- tipo de elementos gráficos coerentes\n- sensação que a página deve transmitir\n\nExemplos de adaptação:\n- cursos da saúde: confiança, cuidado, precisão, acolhimento, visual limpo e profissional\n- cursos de tecnologia: inovação, futuro, performance, linguagem moderna e visual mais tecnológico\n- cursos jurídicos: credibilidade, seriedade, autoridade, solidez institucional\n- cursos criativos: expressão, portfólio, dinamismo, apelo visual mais ousado\n\nESTRUTURA ESPERADA DO BRIEFING FINAL:\nOrganize o conteúdo final com hierarquia clara e natural, contemplando, quando possível:\n- visão geral do curso\n- proposta de valor\n- tom de comunicação\n- perfil do público\n- benefícios percebidos\n- diferenciais\n- direcionamento visual\n- sugestões de atmosfera da página\n- possíveis ênfases de conversão\n- observações úteis para geração da landing page\n\nREGRAS DE SAÍDA:\n- Retorne apenas o briefing final aprimorado\n- Não use introduções\n- Não use comentários\n- Não diga o que foi alterado\n- Não use textos explicando seu processo\n- Não escreva rótulos meta como “briefing final”, “versão otimizada” ou similares\n- Sua resposta deve começar diretamente no conteúdo final\n- A saída deve estar pronta para ser usada por outro agente\n\nESTILO:\n- Claro\n- Direto\n- Estratégico\n- Organizado\n- Profissional\n- Persuasivo sem exagero\n- Natural\n- Institucional\n- Comercial na medida certa\n- Específico para páginas web de cursos\n\nENTRADA:\nVocê receberá um briefing bruto vindo do front-end.\n\nSAÍDA:\nVocê devolverá somente a versão aprimorada, estratégica e temática do briefing.\n\nBriefing para aprimoramento:\n{{ $json.BREAFING }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -160,
+        -496
+      ],
+      "id": "850de3bd-74c8-44fd-b0d3-c5d0367d4345",
+      "name": "Aprimora o breafing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "98343669-3622-4786-8ab6-c4038911101e",
+              "name": "breafing",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -496
+      ],
+      "id": "4ed23b46-6724-4ffa-b8be-532875185507",
+      "name": "Breafing aprimorado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8d00cfd3-8a1e-4c56-8869-98b47da3249d",
+              "name": "prompt",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        -192
+      ],
+      "id": "c22c3a6e-d82d-4108-b738-692ed2c9c71c",
+      "name": "Prompt atualizado"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "779d7606-6b0f-4b07-9a1d-610422157633",
+              "name": "body.data",
+              "value": "={{ $json.body.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -528,
+        96
+      ],
+      "id": "8685502d-4a4a-4f6c-8c2a-e4d3e6dae5f5",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/repoGrupoAnchieta",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "site-anchieta",
+          "mode": "name"
+        },
+        "filePath": "=app/(modalidades)/{{ $json.tipo_slug_modalidade }}/[slug]/pages/teste4-{{ $json.slug_curso }}.tsx",
+        "fileContent": "={{ $json.output }}",
+        "commitMessage": "=feat: add graduacao page \"{{ $json.nome_curso }}\"",
+        "additionalParameters": {
+          "branch": {
+            "branch": "staging"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        2352,
+        80
+      ],
+      "id": "756cd2c2-14ff-4771-b960-60f1b85724cd",
+      "name": "Commit Staging",
+      "webhookId": "552d679d-bff0-4124-a30c-ac44496a2fda",
+      "credentials": {
+        "githubApi": {
+          "id": "WR8D247CNrbcD4Jx",
+          "name": "Token Github Tadeu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-landing-page",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1088,
+        736
+      ],
+      "id": "ec406bd0-6273-4590-b557-b126106dd67a",
+      "name": "Webhook1",
+      "webhookId": "347aafb4-ece6-4b11-ac1f-f1237e2b46c1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        432,
+        896
+      ],
+      "id": "74ec28cf-847f-42aa-9bdb-6dc9ba68302e",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Seu trabalho é processar as alterações solicitadas.\n\n1-Você deve analisar as alterações fornecidas.\n2-Sua tarefa é reescrever essas alterações de forma mais objetiva, clara e direta.\n3-O resultado deve preservar exatamente a intenção original do usuário, sem adicionar novas solicitações.\n4-Você deve transformar frases curtas, soltas ou informais em instruções mais claras e utilizáveis.\n5-Não copie exatamente o texto original quando for possível melhorar a clareza e a objetividade.\n6-NÃO incluir explicações, comentários ou textos adicionais.\n7-NÃO escrever frases como \"aqui está\", \"segue\" ou qualquer introdução.\n8-Retornar SOMENTE o resultado final.\n9-O conteúdo deve estar pronto para uso direto.\n\nAlterações solicitadas:\n{{ $json.body.alteracoes }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        432,
+        720
+      ],
+      "id": "e69d949a-b35a-4686-b9e4-8e4d16d72ff1",
+      "name": "Aprimora o Prompt1"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        464
+      ],
+      "id": "1c369966-07ee-4d3c-8fd4-6a3c6bd767cc",
+      "name": "Extrai o TSX"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/repoGrupoAnchieta",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "site-anchieta",
+          "mode": "name"
+        },
+        "filePath": "=app/(modalidades)/{{ $json.slug_da_modalidade }}/[slug]/pages/{{ $json.slug_do_curso }}.tsx",
+        "additionalParameters": {}
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        464
+      ],
+      "id": "92699f38-beb6-4e09-bb4d-2ec7968eff40",
+      "name": "Busca Arquivo Existente",
+      "webhookId": "552d679d-bff0-4124-a30c-ac44496a2fda",
+      "credentials": {
+        "githubApi": {
+          "id": "WR8D247CNrbcD4Jx",
+          "name": "Token Github Tadeu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const url = $input.first().json.body.url\n\nconst partes = url.split('/').filter(p => p !== '');\n\nconst slug_da_modalidade = partes[partes.length - 2];\nconst slug_do_curso = partes[partes.length - 1];\n\nreturn {\n  slug_da_modalidade,\n  slug_do_curso\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        464
+      ],
+      "id": "1a944e9c-584d-4e8d-834b-6e78912869cb",
+      "name": "Buscar Modalidade e Slug do Curso"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        240,
+        720
+      ],
+      "id": "d933ad0b-fd46-475d-a9a9-91fe6e177574",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "content": "Atualizar página com base nas informações recebidas.",
+        "height": 224,
+        "width": 224
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        -1360
+      ],
+      "id": "d543be1e-73a3-49ac-90af-3e5d0ecfb720",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.moonshot.ai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Authorization",
+              "value": "Bearer sk-yPzclLkrvhsR16VZYn3HIbu8rqwKCrWJQ1Iqfu1GknNcIPYu"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -1216,
+        -1312
+      ],
+      "id": "b87cb3ff-6e60-4174-8261-72ab1c62ae3e",
+      "name": "Prompt 1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const merge = $('Merge2').item.json.body?.alteracoes ?? '';\nconst TSX = $('Merge2').item.json.data ?? '';\n\nconst prompt = `Com base nas informações fornecidas pelo usuario, altere a antiga pagina feita em Next, você deverá entregar somente o arquivo TSX sem comentários nem nada\n\nREGRAS ABSOLUTAS:\n\n1 - Retorne APENAS código TSX\n2 - Não explique nada\n3 - Não use markdown\n4 - Não criar novo arquivo\n5 - Não mudar a estrutura geral da página\n6 - Não quebrar lógica existente\n7 - Altere SOMENTE o que foi solicitado nas instruções\n8 - NÃO modifique nenhuma outra parte do código além do necessário\n9 - NÃO refatore, reescreva ou melhore código que não foi solicitado\n\nSe você alterar algo fora do solicitado, a resposta estará incorreta.\n\nDados para criação da página:\n${merge}\n\nPágina existente:\n${TSX}`;\n\nreturn [\n  {\n    json: {\n      model: \"kimi-k2.5\",\n      messages: [\n        {\n          role: \"system\",\n          content: \"Você é um agente de IA especialista em criação de páginas de alta conversão com Next.js App Router + TypeScript + Tailwind CSS.\"\n        },\n        {\n          role: \"user\",\n          content: prompt\n        }\n      ]\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1456,
+        -1312
+      ],
+      "id": "65eadb53-74ab-4e93-a3f3-5b5b83481d63",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1392,
+        704
+      ],
+      "id": "e7b6dc4d-a6a7-4642-b9fe-953f18a10664",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "update-landing-page-status",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1056,
+        1264
+      ],
+      "id": "e77ba54d-bdef-4727-98e2-72cf9b59a02d",
+      "name": "Webhook2",
+      "webhookId": "347aafb4-ece6-4b11-ac1f-f1237e2b46c1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.anchieta.br/api_n8n/agentes-marketing/landing-pages/update.php",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $('Webhook1').item.json.body.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1904,
+        704
+      ],
+      "id": "4b6834d2-c551-48c0-8e46-4609a62bd45c",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.anchieta.br/api_n8n/agentes-marketing/landing-pages/update.php",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "id",
+              "value": "={{ $('Webhook2').item.json.body.id }}"
+            },
+            {
+              "name": "status",
+              "value": "PUBLICADO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -160,
+        1264
+      ],
+      "id": "99d81668-4cb6-4ebe-ac4c-1799b0a77790",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const url = $input.first().json.body.url\n\nconst partes = url.split('/').filter(p => p !== '');\n\nconst slug_da_modalidade = partes[partes.length - 2];\nconst slug_do_curso = partes[partes.length - 1];\n\nreturn {\n  slug_da_modalidade,\n  slug_do_curso\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -848,
+        1264
+      ],
+      "id": "00d330ad-1f60-438c-92fd-1f118a37259a",
+      "name": "Buscar Modalidade e Slug do Curso1"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/repoGrupoAnchieta",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "site-anchieta",
+          "mode": "name"
+        },
+        "filePath": "=app/(modalidades)/{{ $json.slug_da_modalidade }}/[slug]/pages/{{ $json.slug_do_curso\n }}.tsx",
+        "additionalParameters": {
+          "reference": "staging"
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -624,
+        1264
+      ],
+      "id": "f69984d8-4f4c-46d7-9f6b-ed49d7366d3b",
+      "name": "Get File",
+      "webhookId": "552d679d-bff0-4124-a30c-ac44496a2fda",
+      "credentials": {
+        "githubApi": {
+          "id": "WR8D247CNrbcD4Jx",
+          "name": "Token Github Tadeu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/repoGrupoAnchieta",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "site-anchieta",
+          "mode": "name"
+        },
+        "filePath": "=app/(modalidades)/{{ $json.slug_da_modalidade }}/[slug]/pages/{{ $json.slug_do_curso }}.tsx",
+        "fileContent": "={{ $json.output }}",
+        "commitMessage": "=feat: modified \"{{ $json.slug_do_curso }}.tsx\"",
+        "additionalParameters": {
+          "branch": {
+            "branch": "staging"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        704
+      ],
+      "id": "bc49a9df-3c69-4860-9be0-21468a3b2b67",
+      "name": "Commit: Create Page",
+      "webhookId": "552d679d-bff0-4124-a30c-ac44496a2fda",
+      "credentials": {
+        "githubApi": {
+          "id": "WR8D247CNrbcD4Jx",
+          "name": "Token Github Tadeu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "=https://github.com/repoGrupoAnchieta",
+          "mode": "url"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "site-anchieta",
+          "mode": "name"
+        },
+        "filePath": "=app/(modalidades)/{{ $json.slug_da_modalidade }}/[slug]/pages/{{ $json.slug_do_curso }}.tsx",
+        "binaryData": true,
+        "commitMessage": "=feat: publish \"{{ $json.slug_do_curso }}.tsx\""
+      },
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        -400,
+        1264
+      ],
+      "id": "31714d41-11ed-4881-8a40-902c2c719da6",
+      "name": "Commit: Publish Page",
+      "webhookId": "552d679d-bff0-4124-a30c-ac44496a2fda",
+      "credentials": {
+        "githubApi": {
+          "id": "WR8D247CNrbcD4Jx",
+          "name": "Token Github Tadeu"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        832,
+        -176
+      ],
+      "id": "66548adf-777a-4253-a208-fe0deb9258ea",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['BREAFING E PROMPT'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        832,
+        -352
+      ],
+      "id": "e28c8f54-960c-4731-b74c-43ab434f4999",
+      "name": "Cria um arquivo react"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Refine a página TSX gerada anteriormente.\n\nMantenha:\n\no mesmo arquivo\na mesma estrutura base\no fluxo de conversão já existente\na lógica de formulário e matrícula\no foco em conversão\no foco em SEO/GEO\no foco em performance\no foco em mobile\nas cores já utilizadas no TSX anterior\n\nREGRAS ABSOLUTAS:\n\n1 - Retorne APENAS código TSX\n2 - Não explique nada\n3 - Não use markdown\n4 - Não criar novo arquivo\n5 - Não mudar a estrutura geral da página\n6 - Não quebrar lógica existente\n\nRESTRIÇÕES DE LAYOUT:\n\n7 - NÃO adicionar header\n8 - NÃO adicionar footer\n9 - NÃO adicionar menu global\n10 - NÃO adicionar breadcrumbs\n11 - NÃO gerar BreadcrumbList no schema\n12 - Manter apenas o conteúdo da landing page\n\nIMAGENS E ÍCONES:\n\n13 - NÃO usar emojis\n14 - Se precisar de ícones, usar SVG inline\n15 - NÃO adicionar imagens novas\n16 - NÃO usar next/image sem necessidade\n\nIDENTIDADE VISUAL:\n\n17 - NÃO alterar a identidade visual base\n18 - NÃO criar nova paleta\n19 - Usar apenas cores já existentes no TSX\n20 - Apenas melhorar contraste, consistência e aplicação\n\nMELHORIAS OBRIGATÓRIAS:\n\n21 - Melhorar copy (mais direta, clara e persuasiva)\n22 - Melhorar hierarquia visual\n23 - Melhorar escaneabilidade\n24 - Melhorar legibilidade no mobile\n25 - Melhorar organização das seções\n26 - Melhorar percepção de valor\n27 - Melhorar ritmo de leitura\n28 - Melhorar consistência entre blocos\n\nSEO / GEO:\n\n29 - Melhorar metadata\n30 - Melhorar OpenGraph\n31 - Melhorar Twitter\n32 - Melhorar JSON-LD\n33 - Manter canonical correta\n34 - Manter openGraph.url correta\n35 - Não alterar rota da página\n\nCONVERSÃO:\n\n36 - Fortalecer CTAs\n37 - Melhorar textos dos botões\n38 - Aumentar destaque visual dos botões\n39 - Garantir contraste forte em todos estados (normal, hover, active, focus)\n40 - Garantir que:\n    CTAs apontam para o formulário\n    valor aparece só após envio\n    botão final aparece após valor\n    fluxo NÃO seja quebrado\n\nCOPY:\n\n41 - Reescrever textos para ficarem:\n    mais curtos\n    mais diretos\n    mais comerciais\n    mais escaneáveis\n42 - Evitar:\n    blocos longos\n    texto genérico\n    exageros\n    promessas irreais\n\nDESIGN:\n\n43 - Melhorar espaçamento e ritmo\n44 - Criar separação visual mais clara entre seções\n45 - Destacar melhor:\n    hero\n    benefícios\n    formulário\n    CTA final\n46 - Alternar seções claras e escuras apenas se já fizer sentido no design atual\n\nMOBILE:\n\n47 - Melhorar densidade (menos espaço desnecessário)\n48 - Garantir títulos bem quebrados\n49 - Garantir CTAs fortes e visíveis\n50 - Evitar blocos grandes\n\nFORMULÁRIO:\n\n51 - Não alterar lógica\n52 - Melhorar aparência\n53 - Tornar mais confiável visualmente\n54 - Destacar melhor o bloco de valor revelado\n55 - Destacar botão final de matrícula\n\nPROIBIÇÕES:\n\n56 - Não mudar rota\n57 - Não alterar canonical\n58 - Não alterar estrutura funcional\n59 - Não inventar dados\n60 - Não inventar código de curso\n61 - Não adicionar elementos globais\n62 - Não usar emojis\n63 - Não quebrar fluxo de conversão\n\nOBJETIVO:\n\n64 - Tornar a página mais:\n    vendável\n    clara\n    forte visualmente\n    organizada\n    profissional\n    orientada à decisão\n\n65 - Nunca utilizar componentes client side.\n66 - Nunca utilizar hooks que necessitem ser clientside.\n\n67 - NÃO CRIE HEADER, NÃO CRIE FOOTER, NÃO CRIE NENHUM BLOCO QUE FUNCIONE COMO HEADER OU FOOTER, MESMO QUE COM OUTRO NOME, SE EXISTIR HEADER OU FOOTER NO CÓDIGO ANTERIOR, REMOVER COMPLETAMENTE\n\nEntrada:\n{{ $json.output }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1248,
+        -352
+      ],
+      "id": "d831c4c5-67e7-4522-958b-a674ee5d73bb",
+      "name": "Aprimora o arquivo react"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1248,
+        -192
+      ],
+      "id": "cbe17439-a252-4442-8d19-c95e35f1d00d",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# KIMI K2.5\n",
+        "height": 432,
+        "width": 1088,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3024,
+        -1232
+      ],
+      "id": "33e2a28d-80ae-410a-b3d8-74f5f283a289",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Aceita tanto string JSON quanto objeto já parseado\nconst inputData = $input.first().json.body?.data ?? $input.first().json;\nconst raw = typeof inputData === 'string' ? JSON.parse(inputData) : inputData;\n\n// ─── Dados principais ───────────────────────────────────────\nconst nome_curso    = raw?.nome_curso ?? null;\nconst slug_curso    = raw?.slug_curso ?? null;\nconst grupo_curso   = raw?.grupo_curso ?? null;\nconst carga_horaria = raw?.carga_horaria ?? null;\nconst data_inicio   = raw?.data_inicio ?? null;\nconst duracao_curso = raw?.duracao_curso ?? null;\nconst qtd_vagas     = raw?.quantidade_vagas ?? null; // no JSON atual pode não existir\nconst instagram_url = raw?.instagram_url ?? null;\nconst ebook_url     = raw?.ebook_url ?? null;\nconst briefing      = raw?.briefing_nome ?? null;\n\n// ─── Cores ──────────────────────────────────────────────────\nconst cor_primaria   = raw?.cores?.[0] ?? null;\nconst cor_secundaria = raw?.cores?.[1] ?? null;\nconst cor_terciaria  = raw?.cores?.[2] ?? null;\n\n// ─── Tipo / Modalidade ──────────────────────────────────────\n// No JSON real veio como objeto: tipo_curso\nconst tipo = raw?.tipo_curso ?? {};\n\nconst tipo_codigo          = tipo?.codigo ?? null;\nconst tipo_codigo_curso    = tipo?.codigo_curso ?? null;\nconst tipo_descricao       = tipo?.descricao ?? null;\nconst tipo_slug_modalidade = tipo?.slug_modalidade ?? null;\n\n// ─── Imagem principal ───────────────────────────────────────\nconst imagem = raw?.imagens?.[0] ?? {};\n\nconst imagem_url    = imagem?.imagem ?? null;\nconst imagem_secao  = imagem?.secao ?? null;\nconst imagem_slider = imagem?.slider ?? null;\n\n// ─── Coordenador ────────────────────────────────────────────\nconst coord = raw?.coordenadores?.[0] ?? {};\n\nconst coord_nome      = coord?.nome ?? null;\nconst coord_email     = coord?.email ?? null;\nconst coord_descricao = coord?.descricao ?? null;\nconst coord_imagem    = coord?.imagem ?? null;\n\n// ─── Retorno flat ───────────────────────────────────────────\nreturn [\n  {\n    json: {\n      nome_curso,\n      slug_curso,\n      grupo_curso,\n      carga_horaria,\n      data_inicio,\n      duracao_curso,\n      qtd_vagas,\n      instagram_url,\n      ebook_url,\n      briefing,\n\n      cor_primaria,\n      cor_secundaria,\n      cor_terciaria,\n\n      tipo_codigo,\n      tipo_codigo_curso,\n      tipo_descricao,\n      tipo_slug_modalidade,\n\n      imagem_url,\n      imagem_secao,\n      imagem_slider,\n\n      coord_nome,\n      coord_email,\n      coord_descricao,\n      coord_imagem,\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        96
+      ],
+      "id": "ec5b3857-6bc5-4284-bbc8-f845e0c2d4ac",
+      "name": "Dados do Curso"
+    },
+    {
+      "parameters": {
+        "content": "# FLUXO DE ALTERAÇÃO\n",
+        "height": 736,
+        "width": 3296,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        368
+      ],
+      "id": "acbb50b5-d005-490d-8e33-08c49f4d06f3",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# FLUXO DE PUBLICAÇÃO ",
+        "height": 304,
+        "width": 1216,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        1168
+      ],
+      "id": "5d9a9924-ec42-4e83-9c44-f33c618a9524",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://app.anchieta.br/api_n8n/agentes-marketing/landing-pages/create.php",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nome_pagina",
+              "value": "={{ $('Merge1').item.json.nome_curso }}"
+            },
+            {
+              "name": "url",
+              "value": "=https://lp-staging.anchieta.br/{{ $('Merge1').item.json.tipo_slug_modalidade }}/{{ $('Merge1').item.json.slug_curso }}"
+            },
+            {
+              "name": "tipo_pagina",
+              "value": "={{ $('Merge1').item.json.tipo_slug_modalidade }}"
+            },
+            {
+              "name": "status",
+              "value": "RASCUNHO"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        2544,
+        80
+      ],
+      "id": "aea9e568-6ec7-4984-a469-c876386a2a9e",
+      "name": "INSERIR NO BD"
+    },
+    {
+      "parameters": {
+        "content": "# FLUXO DE CRIAÇÃO",
+        "height": 848,
+        "width": 3904,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        -544
+      ],
+      "id": "4c9805c0-f2b5-46b6-94c0-1176852687d0",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-pro-preview",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        928,
+        928
+      ],
+      "id": "a5472251-03f0-4974-a3be-febc1b4386c5",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "VvJzDhrRckaatIb0",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Com base nas informações fornecidas pelo usuario, altere a antiga pagina feita em Next, você deverá entregar somente o arquivo TSX sem comentários nem nada\n\nREGRAS ABSOLUTAS:\n\n1 - Retorne APENAS código TSX\n2 - Não explique nada\n3 - Não use markdown\n4 - Não criar novo arquivo\n5 - Não mudar a estrutura geral da página\n6 - Não quebrar lógica existente\n7 - Altere SOMENTE o que foi solicitado nas instruções\n8 - NÃO modifique nenhuma outra parte do código além do necessário\n9 - NÃO refatore, reescreva ou melhore código que não foi solicitado\n\nSe você alterar algo fora do solicitado, a resposta estará incorreta.\n\nDados para criação da página:\n{{ $json.output }}\n\nPágina existente:\n{{ $('Extrai o TSX').item.json.data }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        928,
+        720
+      ],
+      "id": "6953ec2b-9a29-4728-83b0-b48c3f36a097",
+      "name": "Refaz o codigo"
+    }
+  ],
+  "pinData": {
+    "Webhook2": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.anchieta.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "content-length": "84",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7,nso;q=0.6",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.232.17.246",
+            "x-forwarded-host": "n8n.anchieta.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "efeb0c44a230",
+            "x-real-ip": "200.232.17.246"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "14",
+            "url": "https://lp-staging.anchieta.br/graduacao-presencial/4odontologia"
+          },
+          "webhookUrl": "https://n8n.anchieta.br/webhook/update-landing-page-status",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Webhook1": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.anchieta.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "content-length": "240",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7,nso;q=0.6",
+            "content-type": "application/json",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.232.17.246",
+            "x-forwarded-host": "n8n.anchieta.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "efeb0c44a230",
+            "x-real-ip": "200.232.17.246"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "14",
+            "url": "https://lp-staging.anchieta.br/graduacao-presencial/4odontologia",
+            "alteracoes": "-Alterar informações sobre o docente, incluir que ele é mestre em mais de 5 areas diferentes.\n-Aumentar a quantidade de conteudo e CTAs."
+          },
+          "webhookUrl": "https://n8n.anchieta.br/webhook/update-landing-page",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ],
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.anchieta.br",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "content-length": "4124",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pt-PT,pt;q=0.9,en-US;q=0.8,en;q=0.7,nso;q=0.6",
+            "content-type": "multipart/form-data; boundary=----WebKitFormBoundaryBQZo8Zq6nto0Ris1",
+            "origin": "http://localhost:3000",
+            "priority": "u=1, i",
+            "referer": "http://localhost:3000/",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "cross-site",
+            "x-forwarded-for": "200.232.17.246",
+            "x-forwarded-host": "n8n.anchieta.br",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "efeb0c44a230",
+            "x-real-ip": "200.232.17.246"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": "{\"nome_curso\":\"Fisioterapia Ocupacional\",\"slug_curso\":\"fisioterapia-ocupacional\",\"grupo_curso\":\"graduacao-presencial\",\"tipo_curso\":{\"codigo\":1,\"codigo_curso\":\"8550\",\"descricao\":\"Graduação Presencial\",\"slug_modalidade\":\"graduacao-presencial\"},\"carga_horaria\":\"4500\",\"data_inicio\":\"2027-06-21\",\"duracao_curso\":\"40\",\"cores\":[\"#2a6e98\",\"#86e0fe\",\"#ffffff\"],\"briefing_nome\":\"briefing_fisioterapia_ocupacional_v2.pdf\",\"docentes\":[{\"nome\":\"Leonardo Carvalho\",\"descricao\":\"Mestre em mais de 5 graduações diferentes.\",\"imagem\":\"https://agentes-uploads.s3.sa-east-1.amazonaws.com/images%2F2026%2F3%2F25%2Ff9070ad2-45e7-469e-8e34-8eb6d88819b2\"}],\"imagens\":[{\"imagem\":\"https://agentes-uploads.s3.sa-east-1.amazonaws.com/images%2F2026%2F3%2F26%2F38617bd8-e347-441d-9190-909e081bc56f\",\"secao\":\"Imagem para background do hero da pagina, coloque uma opacidade.\",\"slider\":\"N\"}],\"instagram_url\":\"https://instagram.com/cabelozl\",\"ebook_url\":\"https://ebook.com/teste\"}"
+          },
+          "webhookUrl": "https://n8n.anchieta.br/webhook/create-landing-page",
+          "executionMode": "production"
+        },
+        "binary": {
+          "briefing_pdf": {
+            "mimeType": "application/pdf",
+            "fileType": "pdf",
+            "fileExtension": "pdf",
+            "data": "filesystem-v2",
+            "fileName": "briefing_fisioterapia_ocupacional_v2.pdf",
+            "id": "filesystem-v2:workflows/yN60blMd7jIZbC8E/executions/temp/binary_data/b8e3db79-9b9d-4ceb-9c26-66cd1a543131",
+            "fileSize": "2.85 kB",
+            "bytes": 2854
+          }
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Aprimora o Prompt",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Breafing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Breafing": {
+      "main": [
+        [
+          {
+            "node": "Aprimora o breafing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "JSON VÁLIDO1": {
+      "main": [
+        [
+          {
+            "node": "Prompt 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt 2": {
+      "main": [
+        []
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Commit Staging",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        []
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Aprimora o Prompt",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt ": {
+      "main": [
+        []
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Filtro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro": {
+      "main": [
+        [
+          {
+            "node": "Cria um arquivo react",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Aprimora o breafing",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprimora o Prompt": {
+      "main": [
+        [
+          {
+            "node": "Prompt atualizado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprimora o breafing": {
+      "main": [
+        [
+          {
+            "node": "Breafing aprimorado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Breafing aprimorado": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt atualizado": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Dados do Curso",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commit Staging": {
+      "main": [
+        [
+          {
+            "node": "INSERIR NO BD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Aprimora o Prompt1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Buscar Modalidade e Slug do Curso",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Extrai o TSX": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Busca Arquivo Existente": {
+      "main": [
+        [
+          {
+            "node": "Extrai o TSX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Modalidade e Slug do Curso": {
+      "main": [
+        [
+          {
+            "node": "Busca Arquivo Existente",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Aprimora o Prompt1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprimora o Prompt1": {
+      "main": [
+        [
+          {
+            "node": "Refaz o codigo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prompt 1": {
+      "main": [
+        []
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Prompt 1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Commit: Create Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook2": {
+      "main": [
+        [
+          {
+            "node": "Buscar Modalidade e Slug do Curso1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar Modalidade e Slug do Curso1": {
+      "main": [
+        [
+          {
+            "node": "Get File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get File": {
+      "main": [
+        [
+          {
+            "node": "Commit: Publish Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commit: Create Page": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Commit: Publish Page": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Cria um arquivo react",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cria um arquivo react": {
+      "main": [
+        [
+          {
+            "node": "Aprimora o arquivo react",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Aprimora o arquivo react",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprimora o arquivo react": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados do Curso": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Refaz o codigo": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Refaz o codigo",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "df7dfd24-eeff-49fe-ba93-5afc64863f32",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0336cca601aa3e675bfeb6908fc2f3398ac0efed71e6a18c50f56f585194a925"
+  },
+  "id": "yN60blMd7jIZbC8E",
+  "tags": []
+}
