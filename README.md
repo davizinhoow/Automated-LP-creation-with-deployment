@@ -12,8 +12,8 @@ O sistema opera em **três fluxos independentes** acionados por webhooks:
 
 | Fluxo | Descrição |
 |-------|-----------|
-| 🟢 **Criação** | Gera uma nova LP do zero a partir de um briefing |
-| 🟡 **Alteração** | Edita uma LP existente com base em instruções |
+| 🟢 **Criação** | Gera uma nova LP do zero a partir de um briefing e deixa na stating |
+| 🟡 **Alteração** | Edita a LP existente com base em instruções |
 | 🔵 **Publicação** | Promove a LP do staging para produção |
 
 ---
@@ -25,44 +25,44 @@ O sistema opera em **três fluxos independentes** acionados por webhooks:
                           │             FLUXO DE CRIAÇÃO                │
                           │                                             │
   POST /create-landing-page                                             │
-         │                                                             │
-         ▼                                                             │
-  ┌─────────────┐    ┌──────────────┐    ┌──────────────────────┐      │
-  │   Webhook   │───▶│ Extract PDF  │───▶│  Aprimora Briefing   │      │
-  │             │    │  (Briefing)  │    │  (Gemini 2.5 Pro)    │      │
-  └─────────────┘    └──────────────┘    └──────────┬───────────┘      │
-         │                                           │                 │
-         │           ┌──────────────┐                ▼                 │
-         └──────────▶│ Aprimora     │──▶  ┌──────────────────────┐    │
-                     │  Prompt      │     │        Merge         │    │
-                     │ (Gemini Pro) │     │ (Briefing + Prompt)  │    │
-                     └──────────────┘     └──────────┬───────────┘    │
-                                                      │               │
-                                                      ▼               │
-                                          ┌──────────────────────┐    │
-                                          │  Cria arquivo React  │    │
-                                          │   (Agente Gemini)    │    │
-                                          └──────────┬───────────┘    │
-                                                      │               │
-                                                      ▼               │
-                                          ┌──────────────────────┐    │
-                                          │ Aprimora arquivo TSX │    │
-                                          │  (SEO, Design, UX)   │    │
-                                          └──────────┬───────────┘    │
-                                                      │               │
-                              ┌───────────────────────┘               │
-                              ▼                                        │
-                  ┌───────────────────────┐                            │
-                  │   Commit → STAGING    │                            │
-                  │  (branch: staging)    │                            │
-                  └───────────┬───────────┘                            │
-                              │                                        │
-                              ▼                                        │
-                  ┌───────────────────────┐                            │
-                  │   Registra no BD      │                            │
-                  │  (API Anchieta)       │                            │
-                  └───────────────────────┘                            │
-                                                                       │
+         │                                                              │
+         ▼                                                              │
+  ┌─────────────┐    ┌──────────────┐    ┌──────────────────────┐       │
+  │   Webhook   │───▶  Extract PDF │ ───▶  Aprimora Briefing   │       │  
+  │             │    │  (Briefing)  │    │  (Gemini 2.5 Pro)    │       │
+  └─────────────┘    └──────────────┘    └──────────┬───────────┘       │
+         │                                           │                  │
+         │           ┌──────────────┐                ▼                  │
+         └──────────▶│ Aprimora     │──▶  ┌──────────────────────┐     │
+                       │  Prompt      │     │        Merge         │    │
+                       │ (Gemini Pro) │     │ (Briefing + Prompt)  │    │
+                       └──────────────┘     └──────────┬───────────┘    │
+                                                        │               │
+                                                        ▼               │
+                                            ┌──────────────────────┐    │
+                                            │  Cria arquivo React  │    │
+                                            │   (Agente Gemini)    │    │
+                                            └──────────┬───────────┘    │
+                                                        │               │
+                                                        ▼               │
+                                            ┌──────────────────────┐    │
+                                            │ Aprimora arquivo TSX │    │
+                                            │  (SEO, Design, UX)   │    │
+                                            └──────────┬───────────┘    │
+                                                        │               │
+                                ┌───────────────────────┘               │
+                              ▼                                         │
+                  ┌───────────────────────┐                             │
+                  │   Commit → STAGING    │                             │
+                  │  (branch: staging)    │                             │
+                  └───────────┬───────────┘                             │
+                              │                                         │
+                              ▼                                         │
+                  ┌───────────────────────┐                             │
+                  │   Registra no BD      │                             │
+                  │  (API Anchieta)       │                             │
+                  └───────────────────────┘                             │
+                                                                        │
                           └─────────────────────────────────────────┘
 
 
