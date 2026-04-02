@@ -60,7 +60,7 @@ O sistema opera em **três fluxos independentes** acionados por webhooks:
                               ▼                                         │
                   ┌───────────────────────┐                             │
                   │   Registra no BD      │                             │
-                  │  (API Anchieta)       │                             │
+                  │  (API)                │                             │
                   └───────────────────────┘                             │
                                                                         │
                           └─────────────────────────────────────────┘
@@ -146,14 +146,14 @@ O sistema opera em **três fluxos independentes** acionados por webhooks:
 |--------|--------|
 | **Gemini 2.5 Pro** | Aprimoramento do briefing recebido |
 | **Gemini 3.1 Pro Preview** | Criação do arquivo TSX, refinamento e edição de código |
-| **Kimi K2.5** (Moonshot AI) | Geração inicial de estrutura — suporte adicional de prompt |
+
 
 ### 🔗 Integrações
 
 | Serviço | Uso |
 |---------|-----|
 | **GitHub** | Versionamento e commit dos arquivos `.tsx` nos branches `staging` e `main` |
-| **API Interna (Anchieta)** | Registro e atualização de status das landing pages no banco de dados |
+| **API Interna** | Registro e atualização de status das landing pages no banco de dados |
 
 ### 🏗️ Stack do Projeto de Landing Pages
 
@@ -167,7 +167,7 @@ O sistema opera em **três fluxos independentes** acionados por webhooks:
 ## 📂 Estrutura de Arquivos no Repositório
 
 ```
-site-anchieta/
+site/
 └── app/
     └── (modalidades)/
         └── [tipo_slug_modalidade]/
@@ -199,7 +199,7 @@ site-anchieta/
 6. [SERVIDOR]    Build do projeto React no servidor de staging
         │         → npm run build
         ▼
-7. [VALIDAÇÃO]   Revisão da página em: https://lp-staging.anchieta.br/...
+7. [VALIDAÇÃO]   Revisão da página em: https://...
         │
         ▼
 8. [WEBHOOK]     Aprovação → POST /update-landing-page-status
@@ -214,7 +214,7 @@ site-anchieta/
 11. [BD]         Status atualizado para → PUBLICADO
         │
         ▼
-12. [PRODUÇÃO]   Página live em: https://anchieta.br/...
+12. [PRODUÇÃO]   Página live em: https://...
 ```
 
 ---
@@ -245,7 +245,7 @@ site-anchieta/
 ```json
 {
   "id": "123",
-  "url": "https://lp-staging.anchieta.br/graduacao/administracao"
+  "url": "url_staging"
 }
 ```
 
@@ -258,7 +258,7 @@ Após cada commit automático (staging ou produção), é necessário executar o
 ### Servidor de Staging
 
 ```bash
-cd /var/www/site-anchieta
+cd /var/www/site
 git pull origin staging
 npm install
 npm run build
@@ -268,7 +268,7 @@ pm2 restart site-staging   # ou o processo equivalente
 ### Servidor de Produção
 
 ```bash
-cd /var/www/site-anchieta
+cd /var/www/site
 git pull origin main
 npm install
 npm run build
@@ -284,7 +284,6 @@ pm2 restart site-prod   # ou o processo equivalente
 | Variável | Descrição |
 |----------|-----------|
 | `GOOGLE_GEMINI_API_KEY` | Chave da API Google Gemini (configurada no n8n) |
-| `MOONSHOT_API_KEY` | Chave da API Kimi/Moonshot AI |
 | `GITHUB_TOKEN` | Token com permissão de escrita no repositório |
 | `API_BD_URL` | URL da API interna para registro de LPs |
 
